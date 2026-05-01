@@ -1,0 +1,34 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'Colas SQS para procesamiento asíncrono'
+
+Resources:
+  # Cola principal de órdenes
+  rOrdenesQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: arka-ordenes-queue
+      VisibilityTimeout: 60
+      MessageRetentionPeriod: 1209600  # 14 días
+      RedrivePolicy:
+        deadLetterTargetArn: !GetAtt rOrdenesDeadLetterQueue.Arn
+        maxReceiveCount: 3
+
+  # Cola de dead letter para órdenes fallidas
+  rOrdenesDeadLetterQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: arka-ordenes-dlq
+      MessageRetentionPeriod: 1209600
+
+  # Cola para notificaciones
+  rNotificacionesQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: arka-notificaciones-queue
+      VisibilityTimeout: 30
+
+Outputs:
+  oOrdenesQueueUrl:
+    Value: !Ref rOrdenesQueue
+  oOrdenesQueueArn:
+    Value: !GetAtt rOrdenesQueue.Arn

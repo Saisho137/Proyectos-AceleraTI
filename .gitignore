@@ -1,1 +1,63 @@
+# macOS
 .DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Java / Kotlin
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+hs_err_pid*
+*.hprof
+
+# Gradle
+.gradle/
+**/build/
+build-cache/
+.gradletasknamecache
+gradle-app.setting
+
+# Maven
+target/
+!.mvn/wrapper/maven-wrapper.jar
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# Eclipse
+.classpath
+.project
+.settings/
+.apt_generated
+.factorypath
+.springBeans
+.sts4-cache
+.loadpath
+bin/
+
+# VS Code
+.vscode/
+
+# Logs
+*.log
+logs/
+
+# Environment / secrets
+.env
+.env.local
+.env.*.local
+
+# LocalStack data
+localstack-data/
+
+# Sonar
+.sonar/
+.scannerwork/
+.sonarlint/

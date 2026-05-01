@@ -1,0 +1,18 @@
+services:
+  app:
+    container_name: example-app
+    build:
+        context: .
+        dockerfile: deployment/Dockerfile
+    ports:
+      - "8080:8080"
+    volumes:
+      - app-data:/app/data
+    networks:
+      - app-network
+
+networks:
+  app-network:
+
+volumes:
+  app-data:

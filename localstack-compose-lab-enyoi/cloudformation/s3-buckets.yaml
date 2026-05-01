@@ -1,0 +1,59 @@
+# CloudFormation template para buckets S3
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'Buckets S3 para el proyecto'
+
+Parameters:
+  pEnvironment:
+    Type: String
+    Default: dev
+    AllowedValues: [dev, staging, prod]
+
+Resources:
+  # Bucket para archivos de productos
+  rProductosBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub "arka-productos-${pEnvironment}"
+      VersioningConfiguration:
+        Status: Enabled
+      CorsConfiguration:
+        CorsRules:
+          - AllowedHeaders: ['*']
+            AllowedMethods: [GET, PUT, POST, DELETE]
+            AllowedOrigins: ['*']
+            MaxAge: 3000
+
+  # Bucket para reportes
+  rReportesBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub "arka-reportes-${pEnvironment}"
+      LifecycleConfiguration:
+        Rules:
+          - Id: DeleteOldReports
+            Status: Enabled
+            ExpirationInDays: 90
+
+  # Lambda buckets
+  rLambdasBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub "lambda-code-${pEnvironment}"
+
+Outputs:
+  oProductosBucketName:
+    Value: !Ref rProductosBucket
+    Export:
+      Name: !Sub "${pEnvironment}-ProductosBucket"
+  oProductosBucketARN:
+    Value: !GetAtt rProductosBucket.Arn
+    Export:
+      Name: !Sub "${pEnvironment}-ProductosBucket-Arn"
+  oReportesBucketName:
+    Value: !Ref rReportesBucket
+    Export:
+      Name: !Sub "${pEnvironment}-ReportesBucket"
+  oReportesBucketARN:
+    Value: !GetAtt rReportesBucket.Arn
+    Export:
+      Name: !Sub "${pEnvironment}-ReportesBucket-Arn"

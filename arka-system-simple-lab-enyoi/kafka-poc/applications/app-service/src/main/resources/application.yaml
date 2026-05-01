@@ -1,0 +1,41 @@
+server:
+  port: 8089
+spring:
+  application:
+    name: "KafkaPoc"
+  devtools:
+    add-properties: false
+  h2:
+    console:
+      enabled: true
+      path: "/h2"
+  profiles:
+    include: null
+  kafka:
+    bootstrap-servers: "localhost:9092"
+    consumer:
+      group-id: "KafkaPoc"
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health,prometheus"
+  endpoint:
+    health:
+      probes:
+        enabled: true
+cors:
+  allowed-origins: "*"
+
+adapters:
+  kafka:
+    consumer:
+      topic: "test-events"
+    producer:
+      topic: "test-events"
+reactive:
+  commons:
+    kafka:
+      app: # this is the name of the default domain
+        connectionProperties: # you can override the connection properties of each domain
+          bootstrap-servers: "localhost:9092"

@@ -1,0 +1,43 @@
+plugins {
+    id 'java'
+    id 'jacoco'
+}
+
+group = 'org.enyoi'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testImplementation "org.assertj:assertj-core:3.25.1"
+    testImplementation "org.mockito:mockito-core:5.+"
+    testImplementation "org.mockito:mockito-junit-jupiter:5.+"
+}
+
+test {
+    useJUnitPlatform()
+
+    testLogging {
+        exceptionFormat = "full"
+        showStandardStreams = true
+        events = ["passed", "failed", "skipped"]
+    }
+
+    finalizedBy jacocoTestReport
+}
+
+jacocoTestReport {
+    dependsOn test
+    reports {
+        xml.setRequired true
+        xml.setOutputLocation layout.buildDirectory.file("reports/jacoco.xml")
+        csv.setRequired false
+        html.setRequired true
+        html.setOutputLocation layout.buildDirectory.dir("reports/jacocoHtml")
+    }
+}
